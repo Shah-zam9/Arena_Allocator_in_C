@@ -45,7 +45,7 @@ void* myMalloc(Arena* arena, size_t size)
 {
     /*
     Reserve a portion of memory from within the arena for the program's use.
-    Memory portions must follow alignment rules specified.
+    Memory portions  follow alignment rules specified in README.MD.
 
     Parameters:
         size: size of the memory portion to reserve.
@@ -83,10 +83,6 @@ void* myMalloc(Arena* arena, size_t size)
    } 
    uintptr_t current_adress=(uintptr_t)(arena->arena+arena->occupied);
    uintptr_t new_adress =((current_adress+rules-1)/rules)*rules;
-   /*printf("Requesting size: %zu\n", size);
-    printf("Alignment rules: %zu\n", rules);
-    printf("Current address: %p\n", (void*)current_adress);
-    printf("Aligned address: %p\n", (void*)new_adress);*/
     size_t padding = new_adress - current_adress;
     if (padding + size > arena->free)
     {
@@ -127,11 +123,6 @@ void* myRealloc(Arena* arena, void* address, size_t old_size, size_t new_size)
     to be of a different size. You may store data of the same size there, but it's way more convenient to just call my_malloc rather than keeping
     track of the addresses being reallocated.
 
-    Try thinking of ways to improve the arena implementation to overcome such an issue and allow shifting the memory portions inside the arena to
-    prevent space wastage. Who knows? Maybe we'll test this at some point later on.
-
-    However, for the sake of this assignment, you are NOT required to shift memory portions inside the arena upon reallocation.
-
     Parameters:
         arena: the arena from which memory portions are taken.
         address: the address (of a memory portion inside the arena) which contains data to be reallocated.
@@ -169,7 +160,6 @@ void arenaClear(Arena* arena)
 {
     /*
     Clear the arena so that it may be overwritten with new data from the start.
-    You may not allocate new memory inside this function.
 
     Parameters:
         arena: arena to be cleared.
@@ -186,9 +176,9 @@ void arenaClear(Arena* arena)
 void arenaExpansion(Arena* arena, void** addresses[], size_t sizes[], int num_addresses){
     
     /*Expand the specified arena to be twice the size of the current one.
-    Update all pointers that point to the memory portions inside the current arena
+    Updates all pointers that point to the memory portions inside the current arena
     to now point to the corresponding portions (containing the same data) in the new arena.
-    Make sure all data is aligned.
+    All data is aligned.
 
     Parameters:
         arena: arena to be expanded
